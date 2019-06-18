@@ -1,5 +1,8 @@
 package br.com.marcelo.testesUnitarios.servicos;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+
 import java.util.Date;
 
 import org.junit.Assert;
@@ -24,8 +27,8 @@ public class LocacaoServiceTest
 		Locacao locacao = new LocacaoService().alugarFilme(usuario, filme);
 
 		// verificacao
-		Assert.assertTrue(locacao.getValor() == 5.0);
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+		Assert.assertThat(locacao.getValor(), is(equalTo(5.0)));
+		Assert.assertThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
+		Assert.assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true) );
 	}
 }
