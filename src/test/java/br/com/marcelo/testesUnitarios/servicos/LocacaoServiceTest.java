@@ -5,8 +5,9 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Date;
 
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import br.com.marcelo.testesUnitarios.entidades.Filme;
 import br.com.marcelo.testesUnitarios.entidades.Locacao;
@@ -16,6 +17,9 @@ import br.com.marcelo.testesUnitarios.utils.DataUtils;
 public class LocacaoServiceTest
 {
 
+	@Rule
+	public ErrorCollector error = new ErrorCollector();
+	
 	@Test
 	public void teste()
 	{
@@ -27,8 +31,8 @@ public class LocacaoServiceTest
 		Locacao locacao = new LocacaoService().alugarFilme(usuario, filme);
 
 		// verificacao
-		Assert.assertThat(locacao.getValor(), is(equalTo(5.0)));
-		Assert.assertThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		Assert.assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true) );
+		error.checkThat(locacao.getValor(), is(equalTo(6.0)));
+		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
+		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(false) );
 	}
 }
