@@ -7,6 +7,7 @@ public class Filme
 	private Double precoLocacao;
 
 	public Filme() { }
+	
 
 	public Filme(String nome, Integer estoque, Double precoLocacao)
 	{
