@@ -14,6 +14,8 @@ import org.junit.rules.ExpectedException;
 import br.com.marcelo.testesUnitarios.entidades.Filme;
 import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
+import br.com.marcelo.testesUnitarios.exceptions.FilmeSemEstoqueException;
+import br.com.marcelo.testesUnitarios.exceptions.LocadoraException;
 import br.com.marcelo.testesUnitarios.utils.DataUtils;
 
 public class LocacaoServiceTest
@@ -21,72 +23,75 @@ public class LocacaoServiceTest
 
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
-	
+
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
-	
+
 	@Test
 	public void testeLocacao() throws Exception
 	{
 		// cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 2, 5.0);
+		Filme filme = new Filme("Filme 1", 2, 4.0);
 
 		// acao
 		Locacao locacao = new LocacaoService().alugarFilme(usuario, filme);
-			
+
 		// verificacao
-		error.checkThat(locacao.getValor(), is(equalTo(5.0)));
+		error.checkThat(locacao.getValor(), is(equalTo(4.0)));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true) );
+		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)),
+				is(true));
 	}
-	
-	//Primeira forma do teste esperar uma Exception
-	@Test(expected=Exception.class)
-	public void testeLocacaoFilmeSemEstoque1() throws Exception
+
+	// Primeira forma do teste esperar uma Exception
+	@Test(expected = FilmeSemEstoqueException.class)
+	public void testeLocacaoFilmeSemEstoque() throws Exception
 	{
 		// cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
+		Filme filme = new Filme("Filme 1", 0, 4.0);
 
 		// acao
 		new LocacaoService().alugarFilme(usuario, filme);
 	}
-	
-	//Segunda forma do teste esperar uma Exception
+
+
+	// Segunda forma do teste esperar uma Exception
 	@Test
-	public void testeLocacaoFilmeSemEstoque2()
+	public void testeLocacaoUsuarioVazio() throws FilmeSemEstoqueException
 	{
 		// cenario
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
+		LocacaoService locacaoService = new LocacaoService();
+		Filme filme = new Filme("Filme 2", 2, 4.0);
 
 		// acao
+
 		try
 		{
-			new LocacaoService().alugarFilme(usuario, filme);
-			Assert.fail("Deveria ter lancado uma excecao");
+			locacaoService.alugarFilme(null, filme);
+			Assert.fail();
 		}
-		catch (Exception e)
+		catch (LocadoraException e)
 		{
-			Assert.assertThat(e.getMessage(), is("Filme sem estoque"));
+			Assert.assertThat(e.getMessage(), is("Usuario vazio"));
 		}
 	}
 	
-	//Terceira forma do teste esperar uma Exception
+
+	// Terceira forma do teste esperar uma Exception
 	@Test
-	public void testeLocacaoFilmeSemEstoque3() throws Exception
+	public void testeFilmeVazio() throws LocadoraException, FilmeSemEstoqueException
 	{
 		// cenario
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
-
-		exception.expect(Exception.class);
-		exception.expectMessage("Filme sem estoque");
-		
-		// acao
-		new LocacaoService().alugarFilme(usuario, filme);
+		LocacaoService locacaoService = new LocacaoService();
+		Usuario usuario = new Usuario("Usuario 2");
 		
 		
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Filme vazio");
+		
+		//acao
+		locacaoService.alugarFilme(usuario, null);
 	}
 }

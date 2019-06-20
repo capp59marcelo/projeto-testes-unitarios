@@ -7,16 +7,29 @@ import java.util.Date;
 import br.com.marcelo.testesUnitarios.entidades.Filme;
 import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
+import br.com.marcelo.testesUnitarios.exceptions.FilmeSemEstoqueException;
+import br.com.marcelo.testesUnitarios.exceptions.LocadoraException;
 
 public class LocacaoService
 {
-	public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception
+	public Locacao alugarFilme(Usuario usuario, Filme filme) throws LocadoraException, FilmeSemEstoqueException
 	{
-		if(filme.getEstoque() == 0)
+
+		if (usuario == null)
 		{
-			throw new Exception("Filme sem estoque");
+			throw new LocadoraException("Usuario vazio");
 		}
-		
+
+		if (filme == null)
+		{
+			throw new LocadoraException("Filme vazio");
+		}
+
+		if (filme.getEstoque() == 0)
+		{
+			throw new FilmeSemEstoqueException();
+		}
+
 		Locacao locacao = new Locacao();
 		locacao.setFilme(filme);
 		locacao.setUsuario(usuario);
