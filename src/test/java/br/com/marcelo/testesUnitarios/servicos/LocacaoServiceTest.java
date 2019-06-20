@@ -5,7 +5,11 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Date;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -21,11 +25,38 @@ import br.com.marcelo.testesUnitarios.utils.DataUtils;
 public class LocacaoServiceTest
 {
 
+	private LocacaoService locacaoService;
+	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
+	
+	@Before
+	public void setup()
+	{
+		System.out.println("before");
+		locacaoService = new LocacaoService();
+	}
+	
+	@After
+	public void tearDown()
+	{
+		System.out.println("after");
+	}
+	
+	@BeforeClass
+	public static void setupClass()
+	{
+		System.out.println("before Class");
+	}
+	
+	@AfterClass
+	public static void tearDownClass()
+	{
+		System.out.println("after Class");
+	}
 
 	@Test
 	public void testeLocacao() throws Exception
@@ -35,13 +66,12 @@ public class LocacaoServiceTest
 		Filme filme = new Filme("Filme 1", 2, 4.0);
 
 		// acao
-		Locacao locacao = new LocacaoService().alugarFilme(usuario, filme);
+		Locacao locacao = locacaoService.alugarFilme(usuario, filme);
 
 		// verificacao
 		error.checkThat(locacao.getValor(), is(equalTo(4.0)));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)),
-				is(true));
+		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true));
 	}
 
 	// Primeira forma do teste esperar uma Exception
@@ -53,7 +83,7 @@ public class LocacaoServiceTest
 		Filme filme = new Filme("Filme 1", 0, 4.0);
 
 		// acao
-		new LocacaoService().alugarFilme(usuario, filme);
+		locacaoService.alugarFilme(usuario, filme);
 	}
 
 
@@ -62,7 +92,7 @@ public class LocacaoServiceTest
 	public void testeLocacaoUsuarioVazio() throws FilmeSemEstoqueException
 	{
 		// cenario
-		LocacaoService locacaoService = new LocacaoService();
+		
 		Filme filme = new Filme("Filme 2", 2, 4.0);
 
 		// acao
@@ -84,7 +114,6 @@ public class LocacaoServiceTest
 	public void testeFilmeVazio() throws LocadoraException, FilmeSemEstoqueException
 	{
 		// cenario
-		LocacaoService locacaoService = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 2");
 		
 		
