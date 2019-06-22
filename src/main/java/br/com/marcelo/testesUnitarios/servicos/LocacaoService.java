@@ -2,6 +2,7 @@ package br.com.marcelo.testesUnitarios.servicos;
 
 import static br.com.marcelo.testesUnitarios.utils.DataUtils.adicionarDias;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
 import br.com.marcelo.testesUnitarios.exceptions.FilmeSemEstoqueException;
 import br.com.marcelo.testesUnitarios.exceptions.LocadoraException;
+import br.com.marcelo.testesUnitarios.utils.DataUtils;
 
 public class LocacaoService
 {
@@ -58,6 +60,10 @@ public class LocacaoService
 		// Entrega no dia seguinte
 		Date dataEntrega = new Date();
 		dataEntrega = adicionarDias(dataEntrega, 1);
+		if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY))
+		{
+			dataEntrega = adicionarDias(dataEntrega, 1);
+		}
 		locacao.setDataRetorno(dataEntrega);
 
 		// Salvando a locacao...
