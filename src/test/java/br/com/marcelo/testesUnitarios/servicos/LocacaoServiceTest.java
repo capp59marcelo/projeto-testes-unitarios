@@ -22,6 +22,7 @@ import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
 import br.com.marcelo.testesUnitarios.exceptions.FilmeSemEstoqueException;
 import br.com.marcelo.testesUnitarios.exceptions.LocadoraException;
+import br.com.marcelo.testesUnitarios.matchers.MatchersProprios;
 import br.com.marcelo.testesUnitarios.utils.DataUtils;
 
 public class LocacaoServiceTest
@@ -179,5 +180,6 @@ public class LocacaoServiceTest
 		//verificacao
 		boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
 		Assert.assertTrue(ehSegunda);
+		assertThat(retorno.getDataRetorno(), MatchersProprios.caiNumaSegunda());
 	}
 }
