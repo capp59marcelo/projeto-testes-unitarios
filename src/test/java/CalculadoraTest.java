@@ -6,6 +6,7 @@ import br.com.marcelo.testesUnitarios.exceptions.NaoPodeDividirPorZeroException;
 
 public class CalculadoraTest
 {
+
 	private Calculadora calc;
 
 	@Before
