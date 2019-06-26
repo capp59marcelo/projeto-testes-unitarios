@@ -17,6 +17,7 @@ import br.com.marcelo.testesUnitarios.utils.DataUtils;
 public class LocacaoService
 {
 	private LocacaoDAO locacaoDAO;
+	private SPCService spcService;
 	
 	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws LocadoraException, FilmeSemEstoqueException
 	{
@@ -38,7 +39,12 @@ public class LocacaoService
 				throw new FilmeSemEstoqueException();
 			}
 		}
-
+		
+		if(spcService.possuiNegativacao(usuario))
+		{
+			throw new LocadoraException("Usuario negativado");
+		}
+		
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
@@ -79,4 +85,10 @@ public class LocacaoService
 	{
 		this.locacaoDAO = locacaoDAO;
 	}
+	
+	public void setSPCService(SPCService spcService)
+	{
+		this.spcService = spcService;
+	}
+	
 }

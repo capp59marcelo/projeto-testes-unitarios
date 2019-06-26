@@ -18,7 +18,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.mockito.Mockito;
 
 import br.com.marcelo.testesUnitarios.daos.LocacaoDAO;
-import br.com.marcelo.testesUnitarios.daos.LocacaoDAOFake;
 import br.com.marcelo.testesUnitarios.entidades.Filme;
 import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
@@ -29,6 +28,8 @@ import br.com.marcelo.testesUnitarios.exceptions.LocadoraException;
 public class CalculoValorLocacaoTest
 {
 	private LocacaoService locacaoService;
+	private LocacaoDAO locacaoDAO;
+	private SPCService spcService;
 	
 	@Parameter
 	public List<Filme> filmes;
@@ -51,8 +52,10 @@ public class CalculoValorLocacaoTest
 	public void setup()
 	{
 		locacaoService = new LocacaoService();
-		LocacaoDAO locacaoDAO = Mockito.mock(LocacaoDAO.class);
+		locacaoDAO = Mockito.mock(LocacaoDAO.class);
 		locacaoService.setLocacaoDAO(locacaoDAO);
+		spcService = Mockito.mock(SPCService.class);
+		locacaoService.setSPCService(spcService);
 	}
 	
 	@Parameters(name="{2}")
