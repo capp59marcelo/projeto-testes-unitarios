@@ -20,6 +20,8 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import br.com.marcelo.testesUnitarios.daos.LocacaoDAO;
+import br.com.marcelo.testesUnitarios.daos.LocacaoDAOFake;
 import br.com.marcelo.testesUnitarios.entidades.Filme;
 import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
@@ -43,6 +45,8 @@ public class LocacaoServiceTest
 	public void setup()
 	{
 		locacaoService = new LocacaoService();
+		LocacaoDAO locacaoDAO = new LocacaoDAOFake();
+		locacaoService.setLocacaoDAO(locacaoDAO);
 	}
 
 	@Test

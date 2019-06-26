@@ -16,6 +16,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import br.com.marcelo.testesUnitarios.daos.LocacaoDAO;
+import br.com.marcelo.testesUnitarios.daos.LocacaoDAOFake;
 import br.com.marcelo.testesUnitarios.entidades.Filme;
 import br.com.marcelo.testesUnitarios.entidades.Locacao;
 import br.com.marcelo.testesUnitarios.entidades.Usuario;
@@ -48,6 +50,8 @@ public class CalculoValorLocacaoTest
 	public void setup()
 	{
 		locacaoService = new LocacaoService();
+		LocacaoDAO locacaoDAO = new LocacaoDAOFake();
+		locacaoService.setLocacaoDAO(locacaoDAO);
 	}
 	
 	@Parameters(name="{2}")
