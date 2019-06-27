@@ -2,6 +2,7 @@ package br.com.marcelo.testesUnitarios.servicos;
 
 import static br.com.marcelo.testesUnitarios.builders.FilmeBuilder.umFilme;
 import static br.com.marcelo.testesUnitarios.builders.FilmeBuilder.umFilmeSemEstoque;
+import static br.com.marcelo.testesUnitarios.builders.LocacaoBuilder.umLocacao;
 import static br.com.marcelo.testesUnitarios.builders.UsuarioBuilder.umUsuario;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,6 +37,7 @@ public class LocacaoServiceTest
 	private LocacaoService locacaoService;
 	private LocacaoDAO locacaoDAO;
 	private SPCService spcService;
+	private EmailService emailService;
 	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -51,6 +53,8 @@ public class LocacaoServiceTest
 		locacaoService.setLocacaoDAO(locacaoDAO);
 		spcService = Mockito.mock(SPCService.class);
 		locacaoService.setSPCService(spcService);
+		emailService = Mockito.mock(EmailService.class);
+		locacaoService.setEmailService(emailService);
 	}
 
 	@Test
@@ -149,5 +153,27 @@ public class LocacaoServiceTest
 		
 	}
 	
-	
+	@Test
+	public void deveEnviarEmailParaLocacoesAtrasadas(){
+		//cenario
+		Usuario usuario = umUsuario().agora();
+		Usuario usuario2 = umUsuario().comNome("Usuario em dia").agora();
+		Usuario usuario3 = umUsuario().comNome("Outro atrasado").agora();
+		List<Locacao> locacoes = Arrays.asList(
+				umLocacao().atrasada().comUsuario(usuario).agora(),
+				umLocacao().comUsuario(usuario2).agora(),
+				umLocacao().atrasada().comUsuario(usuario3).agora(),
+				umLocacao().atrasada().comUsuario(usuario3).agora());
+		Mockito.when(locacaoDAO.obterLocacoesPendentes()).thenReturn(locacoes);
+		
+		//acao
+		locacaoService.notificarAtrasos();
+		
+		//verificacao
+		Mockito.verify(emailService, Mockito.times(3)).notificarAtraso(Mockito.any(Usuario.class));
+		Mockito.verify(emailService).notificarAtraso(usuario);
+		Mockito.verify(emailService, Mockito.atLeastOnce()).notificarAtraso(usuario3);
+		Mockito.verify(emailService, Mockito.never()).notificarAtraso(usuario2);
+		Mockito.verifyNoMoreInteractions(emailService);
+	}
 }

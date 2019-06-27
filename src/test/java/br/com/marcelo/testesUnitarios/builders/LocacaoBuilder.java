@@ -57,6 +57,12 @@ public class LocacaoBuilder {
 		elemento.setValor(param);
 		return this;
 	}
+	
+	public LocacaoBuilder atrasada(){
+		elemento.setDataLocacao(DataUtils.obterDataComDiferencaDias(-4));
+		elemento.setDataRetorno(DataUtils.obterDataComDiferencaDias(-2));
+		return this;
+	}
 
 	public Locacao agora() {
 		return elemento;
