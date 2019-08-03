@@ -15,7 +15,7 @@ public class Calculadora
 
 	public int divide(int a, int b) throws NaoPodeDividirPorZeroException
 	{
-		if(b == 0 )
+		if(b == 0)
 		{
 			throw new NaoPodeDividirPorZeroException();
 		}

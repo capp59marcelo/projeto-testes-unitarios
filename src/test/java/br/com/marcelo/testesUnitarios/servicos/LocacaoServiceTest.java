@@ -85,8 +85,6 @@ public class LocacaoServiceTest
 
 		// verificacao
 		error.checkThat(locacao.getValor(), is(equalTo(5.0)));
-		// error.checkThat(locacao.getDataLocacao(), MatchersProprios.ehHoje());
-		// error.checkThat(locacao.getDataRetorno(), MatchersProprios.ehHojeComDiferencaDias(1));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), DataUtils.obterData(28, 4, 2017)), is(true));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterData(29, 4, 2017)), is(true));
 	}
@@ -115,7 +113,8 @@ public class LocacaoServiceTest
 		{
 			locacaoService.alugarFilme(null, filmes);
 			Assert.fail();
-		} catch (LocadoraException e)
+		}
+		catch(LocadoraException e)
 		{
 			Assert.assertThat(e.getMessage(), is("Usuario vazio"));
 		}
@@ -177,7 +176,8 @@ public class LocacaoServiceTest
 			locacaoService.alugarFilme(usuario, filmes);
 			// verificacao
 			Assert.fail();
-		} catch (LocadoraException e)
+		}
+		catch(LocadoraException e)
 		{
 			Assert.assertThat(e.getMessage(), is("Usuário Negativado"));
 		}

@@ -25,6 +25,4 @@ public class Locacao
 	
 	public List<Filme> getFilmes() 					{ return filmes; }
 	public void setFilmes(List<Filme> filmes) 		{ this.filmes = filmes; }
-
-	
 }

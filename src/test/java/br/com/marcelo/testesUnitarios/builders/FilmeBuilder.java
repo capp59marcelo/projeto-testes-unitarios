@@ -5,10 +5,13 @@ import br.com.marcelo.testesUnitarios.entidades.Filme;
 public class FilmeBuilder
 {
 	private Filme filme;
-	
-	private FilmeBuilder() {}
-	
-	public static FilmeBuilder umFilme(){
+
+	private FilmeBuilder()
+	{
+	}
+
+	public static FilmeBuilder umFilme()
+	{
 		FilmeBuilder builder = new FilmeBuilder();
 		builder.filme = new Filme();
 		builder.filme.setEstoque(2);
@@ -16,8 +19,9 @@ public class FilmeBuilder
 		builder.filme.setPrecoLocacao(4.0);
 		return builder;
 	}
-	
-	public static FilmeBuilder umFilmeSemEstoque(){
+
+	public static FilmeBuilder umFilmeSemEstoque()
+	{
 		FilmeBuilder builder = new FilmeBuilder();
 		builder.filme = new Filme();
 		builder.filme.setEstoque(0);
@@ -25,18 +29,21 @@ public class FilmeBuilder
 		builder.filme.setPrecoLocacao(4.0);
 		return builder;
 	}
-	
-	public FilmeBuilder semEstoque(){
+
+	public FilmeBuilder semEstoque()
+	{
 		filme.setEstoque(0);
 		return this;
 	}
-	
-	public FilmeBuilder comValor(Double valor) {
+
+	public FilmeBuilder comValor(Double valor)
+	{
 		filme.setPrecoLocacao(valor);
 		return this;
 	}
-	
-	public Filme agora(){
+
+	public Filme agora()
+	{
 		return filme;
 	}
 }

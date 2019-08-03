@@ -18,7 +18,7 @@ public class DataDiferencaDiasMatcher extends TypeSafeMatcher<Date>
 	{
 		this.qtdDias = qtdDias;
 	}
-	
+
 	public void describeTo(Description desc)
 	{
 		Date dataEsperada = DataUtils.obterDataComDiferencaDias(qtdDias);
